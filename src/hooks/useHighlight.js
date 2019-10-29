@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useHighligh = (ref, handle, initialRef, deps = []) => {
+export const useHighlight = (ref, handle, initialRef, deps = []) => {
   const [initial, setInitial] = useState(initialRef);
   const [currentHandle, setCurrentHandles] = useState(handle);
   useEffect(() => {
