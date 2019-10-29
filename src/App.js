@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useForm } from "./hooks/useForm";
+import { useHighligh } from "./hooks/useHighligh";
 import "./App.css";
 
 /**
@@ -18,7 +19,7 @@ import "./App.css";
 
 // TODO: check useMeasure using useLayoutEffect
 
-const timeOutHandles = [[], [], [], []];
+const timeOutHandles = Array(4).fill();
 
 function App() {
   const [state, handleChange] = useForm({
@@ -27,76 +28,51 @@ function App() {
     result3: "res 3",
     result4: "res 4"
   });
-  const isInitialMount = useRef({ _1: true, _2: true, _3: true, _4: true });
 
   const pRef1 = useRef();
   const pRef2 = useRef();
   const pRef3 = useRef();
   const pRef4 = useRef();
 
-  useEffect(() => {
-    if (isInitialMount.current._1) {
-      isInitialMount.current._1 = false;
-    } else {
-      timeOutHandles[0].forEach(handle => {
-        clearInterval(handle);
-      });
-      pRef1.current.style = { backgroundColor: "#fff" };
-      pRef1.current.style.background = "yellow";
-      const handle = setTimeout(() => {
-        pRef1.current.style = { backgroundColor: "#fff" };
-      }, 1000);
-      timeOutHandles[0].push(handle);
-    }
-  }, [state.result1]);
+  //TODO: should add rest of logic inside a wrapper
 
-  useEffect(() => {
-    if (isInitialMount.current._2) {
-      isInitialMount.current._2 = false;
-    } else {
-      timeOutHandles[1].forEach(handle => {
-        clearInterval(handle);
-      });
-      pRef2.current.style = { backgroundColor: "#fff" };
-      pRef2.current.style.background = "yellow";
-      const handle = setTimeout(() => {
-        pRef2.current.style = { backgroundColor: "#fff" };
-      }, 1000);
-      timeOutHandles[1].push(handle);
-    }
-  }, [state.result2]);
+  const isInitialMount = useRef({ _1: true, _2: true, _3: true, _4: true });
 
-  useEffect(() => {
-    if (isInitialMount.current._3) {
-      isInitialMount.current._3 = false;
-    } else {
-      timeOutHandles[2].forEach(handle => {
-        clearInterval(handle);
-      });
-      pRef3.current.style = { backgroundColor: "#fff" };
-      pRef3.current.style.background = "yellow";
-      const handle = setTimeout(() => {
-        pRef3.current.style = { backgroundColor: "#fff" };
-      }, 1000);
-      timeOutHandles[2].push(handle);
-    }
-  }, [state.result3]);
+  const [handles1, initial1] = useHighligh(
+    pRef1,
+    timeOutHandles[0],
+    isInitialMount.current._1,
+    [state.result1]
+  );
+  isInitialMount.current._1 = initial1;
+  timeOutHandles[0] = handles1;
 
-  useEffect(() => {
-    if (isInitialMount.current._4) {
-      isInitialMount.current._4 = false;
-    } else {
-      timeOutHandles[3].forEach(handle => {
-        clearInterval(handle);
-      });
-      pRef4.current.style = { backgroundColor: "#fff" };
-      pRef4.current.style.background = "yellow";
-      const handle = setTimeout(() => {
-        pRef4.current.style = { backgroundColor: "#fff" };
-      }, 1000);
-      timeOutHandles[3].push(handle);
-    }
-  }, [state.result4]);
+  const [handles2, initial2] = useHighligh(
+    pRef2,
+    timeOutHandles[1],
+    isInitialMount.current._2,
+    [state.result2]
+  );
+  isInitialMount.current._2 = initial2;
+  timeOutHandles[1] = handles2;
+
+  const [handles3, initial3] = useHighligh(
+    pRef3,
+    timeOutHandles[2],
+    isInitialMount.current._3,
+    [state.result3]
+  );
+  isInitialMount.current._3 = initial3;
+  timeOutHandles[2] = handles3;
+
+  const [handles4, initial4] = useHighligh(
+    pRef4,
+    timeOutHandles[3],
+    isInitialMount.current._4,
+    [state.result4]
+  );
+  isInitialMount.current._4 = initial4;
+  timeOutHandles[3] = handles4;
 
   return (
     <div className="App">
