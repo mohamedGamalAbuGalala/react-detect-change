@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useHighlight } from "../hooks/useHighlight";
 
 const ChildItem = props => {
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    }
+  }, [props]);
+
   const child = props.child;
-  const [handles] = useHighlight(
+  useHighlight(
+    props.updateTimeOut,
+    props.idx,
     props.timeOut,
     child.ref,
     props.timeOutHandles,
-    props.initial,
+    isInitialMount.current,
     [child.props.children]
   );
-  props.timeOutHandles = handles;
   return <></>;
 };
 
 export default ChildItem;
-
-// TODO: https://inventingwithmonster.io/20190207-break-the-rules-of-react-hooks/

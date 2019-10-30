@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
 
-export const useHighlight = (timeOut, ref, handle, initialRef, deps = []) => {
+export const useHighlight = (
+  updateTimeOutFn,
+  idx,
+  timeOut,
+  ref,
+  handle,
+  initialRef,
+  deps = []
+) => {
   const [currentHandle, setCurrentHandles] = useState(handle);
   useEffect(() => {
     if (!initialRef) {
-      // console.log("renders", currentHandle);
+      console.log("highlight", currentHandle);
 
-      clearTimeout(currentHandle);
-      // console.log(currentHandle, "currentHandle cleared");
+      if (currentHandle) {
+        clearTimeout(currentHandle);
+        console.log(currentHandle, "currentHandle cleared");
+      }
 
       ref.current.style.background = "#fff";
       ref.current.style.background = "#f8ffb4";
 
       const timeOutHandle = setTimeout(() => {
-        // console.log(currentHandle, "currentHandle cleared after 3000ms");
+        console.log(currentHandle, `currentHandle cleared after ${timeOut}ms`);
         ref.current.style.background = "#fff";
       }, timeOut);
       setCurrentHandles(timeOutHandle);
@@ -21,6 +31,7 @@ export const useHighlight = (timeOut, ref, handle, initialRef, deps = []) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
+  updateTimeOutFn(idx, currentHandle);
   return [currentHandle];
 };
 

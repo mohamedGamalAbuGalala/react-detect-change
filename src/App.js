@@ -17,8 +17,6 @@ import "./App.css";
     *
     */
 
-// TODO: check useMeasure using useLayoutEffect
-
 function App() {
   const [state, handleChange] = useForm({
     result1: "res 1",
