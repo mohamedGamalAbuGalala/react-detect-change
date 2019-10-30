@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useForm } from "./hooks/useForm";
-import { useHighlight } from "./hooks/useHighlight";
+import Wrapper from "./components/Wrapper";
 import "./App.css";
 
 /**
@@ -19,8 +19,6 @@ import "./App.css";
 
 // TODO: check useMeasure using useLayoutEffect
 
-const timeOutHandles = Array(4).fill();
-
 function App() {
   const [state, handleChange] = useForm({
     result1: "res 1",
@@ -34,52 +32,14 @@ function App() {
   const pRef3 = useRef();
   const pRef4 = useRef();
 
-  //TODO: should add rest of logic inside a wrapper
-
-  const isInitialMount = useRef({ _1: true, _2: true, _3: true, _4: true });
-
-  const [handles1, initial1] = useHighlight(
-    pRef1,
-    timeOutHandles[0],
-    isInitialMount.current._1,
-    [state.result1]
-  );
-  isInitialMount.current._1 = initial1;
-  timeOutHandles[0] = handles1;
-
-  const [handles2, initial2] = useHighlight(
-    pRef2,
-    timeOutHandles[1],
-    isInitialMount.current._2,
-    [state.result2]
-  );
-  isInitialMount.current._2 = initial2;
-  timeOutHandles[1] = handles2;
-
-  const [handles3, initial3] = useHighlight(
-    pRef3,
-    timeOutHandles[2],
-    isInitialMount.current._3,
-    [state.result3]
-  );
-  isInitialMount.current._3 = initial3;
-  timeOutHandles[2] = handles3;
-
-  const [handles4, initial4] = useHighlight(
-    pRef4,
-    timeOutHandles[3],
-    isInitialMount.current._4,
-    [state.result4]
-  );
-  isInitialMount.current._4 = initial4;
-  timeOutHandles[3] = handles4;
-
   return (
     <div className="App">
-      <p ref={pRef1}>{state.result1}</p>
-      <p ref={pRef2}>{state.result2}</p>
-      <p ref={pRef3}>{state.result3}</p>
-      <p ref={pRef4}>{state.result4}</p>
+      <Wrapper timeOut={2000}>
+        <p ref={pRef1}>{state.result1}</p>
+        <p ref={pRef2}>{state.result2}</p>
+        <p ref={pRef3}>{state.result3}</p>
+        <p ref={pRef4}>{state.result4}</p>
+      </Wrapper>
 
       <input
         type="text"
