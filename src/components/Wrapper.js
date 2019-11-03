@@ -1,69 +1,93 @@
-import React from "react";
-import { useEffect, useRef, useState, useCallback } from "react";
-import ChildItem from "./ChildItem";
+import React from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import ChildItem from './ChildItem';
 
 let timeOutHandles = [];
+let validChildren = {};
 
 const updateTimeOut = (idx, value) => {
-  timeOutHandles[idx] = value;
+	timeOutHandles[idx] = value;
 };
 
 const Wrapper = props => {
-  const [validChildren, setValidChildren] = useState([]);
-  const isInitialMount = useRef(true);
+	const [validChildrenPaths, setValidChildrenPaths] = useState([]);
+	const isInitialMount = useRef(true);
 
-  //
-  //
-  //
-  // get tree dfs
-  const getValidChildren = useCallback(
-    cur => {
-      const childs = cur.props.children;
-      if (typeof childs === "object")
-        for (let i = 0; i < childs.length; i++) {
-          const child = childs[i];
-          if (typeof child === "object") getValidChildren(child);
-          else if (child.toString().trim().length) {
-            setValidChildren([...validChildren, cur]);
-            console.log(cur, child);
-          }
-        }
-      else if (childs.toString().trim().length) {
-        setValidChildren([...validChildren, cur]);
-        console.log("***", cur, childs);
-      }
-    },
-    [validChildren]
-  );
+	//
+	//
+	//
+	// get tree dfs
+	const getValidChildren = useCallback((cur, path) => {
+		const children = cur.props.children;
+		if (typeof children === 'object' && children.length)
+			for (let i = 0; i < children.length; i++) {
+				const child = children[i];
+				if (typeof child === 'object') getValidChildren(child, `${path}children[${i}]`);
+				else if (child.toString().trim().length) {
+					// eslint-disable-next-line no-loop-func
+					setValidChildrenPaths(_c => {
+						validChildren[cur.key] = cur;
+						if (_c && _c.includes(`${path}children[${i}]`)) {
+							return _c;
+						} else if (_c) {
+							return [..._c, `${path}children[${i}]`];
+						}
 
-  useEffect(() => {
-    if (isInitialMount.current) {
-      getValidChildren({ props: { children: props.children } });
+						return [`${path}children[${i}]`];
+					});
+					// console.log(cur, child);
+				}
+			}
+		else if (children.toString().trim().length) {
+			setValidChildrenPaths(_c => {
+				validChildren[cur.key] = cur;
+				if (_c && _c.includes(`${path}children`)) {
+					return _c;
+				} else if (_c) {
+					return [..._c, `${path}children`];
+				}
 
-      setValidChildren(validChildren.filter(c => c));
+				return [`${path}children`];
+			});
+			// console.log('***', cur, children);
+		}
+	}, []);
 
-      console.log(props.children);
-      isInitialMount.current = false;
-      timeOutHandles = Array(validChildren.length).fill();
-    }
-  }, [getValidChildren, props.children, validChildren]);
+	useEffect(() => {
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+			console.log(props.children);
+		}
 
-  return (
-    <>
-      {validChildren.map((child, idx) => (
-        <ChildItem
-          key={idx}
-          {...props}
-          idx={idx}
-          updateTimeOut={updateTimeOut}
-          timeOutHandles={timeOutHandles[idx]}
-          child={child}
-        ></ChildItem>
-      ))}
+		setValidChildrenPaths(_c => {
+			getValidChildren({ props: { children: props.children } }, '');
+			return _c.filter(c => c);
+		});
+		timeOutHandles = Array(validChildrenPaths.length).fill();
+	}, [getValidChildren, props.children, validChildrenPaths.length]);
 
-      {props.children}
-    </>
-  );
+	useEffect(() => {
+		console.log(validChildren);
+	}, [props.children]);
+	return (
+		<>
+			{Object.keys(validChildren).map((key, idx) => {
+				const child = validChildren[key];
+				return (
+					<ChildItem
+						key={idx}
+						{...props}
+						idx={idx}
+						updateTimeOut={updateTimeOut}
+						timeOutHandles={timeOutHandles[idx]}
+						child={child}
+					></ChildItem>
+				);
+			})}
+
+			{props.children}
+		</>
+	);
 };
 
 export default Wrapper;
