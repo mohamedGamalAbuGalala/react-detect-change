@@ -25,8 +25,10 @@ const Wrapper = props => {
         else if (child.toString().trim().length) {
           // eslint-disable-next-line no-loop-func
           setValidChildren(_c => {
-            if (_c) return [..._c, cur];
-            return [cur];
+            const curCopy = Object.assign({}, cur);
+            curCopy.ref = React.createRef();
+            if (_c) return [..._c, curCopy];
+            return [curCopy];
           });
           // console.log(cur, child);
         }
@@ -34,14 +36,18 @@ const Wrapper = props => {
     else if (typeof children === 'object') {
       cur = children;
       setValidChildren(_c => {
-        if (_c) return [..._c, cur];
-        return [cur];
+        const curCopy = Object.assign({}, cur);
+        curCopy.ref = React.createRef();
+        if (_c) return [..._c, curCopy];
+        return [curCopy];
       });
       // console.log('+++', cur, Array.isArray(cur.props.children) ? cur.props.children[0] : cur.props.children);
     } else if (children.toString().trim().length) {
       setValidChildren(_c => {
-        if (_c) return [..._c, cur];
-        return [cur];
+        const curCopy = Object.assign({}, cur);
+        curCopy.ref = React.createRef();
+        if (_c) return [..._c, curCopy];
+        return [curCopy];
       });
       // console.log('***', cur, children);
     }
@@ -49,6 +55,7 @@ const Wrapper = props => {
 
   useEffect(() => {
     if (isInitialMount.current) {
+      // console.log(props.children);
       isInitialMount.current = false;
     }
     setValidChildren(_c => []);
@@ -62,7 +69,8 @@ const Wrapper = props => {
 
   useEffect(() => {
     timeOutHandles = Array(validChildren.length).fill();
-    // console.log(validChildren);
+    console.log(validChildren);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validChildren.length]);
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useHighlight = (
   updateTimeOutFn,
@@ -12,19 +12,21 @@ export const useHighlight = (
   const [currentHandle, setCurrentHandles] = useState(handle);
   useEffect(() => {
     if (!initialRef) {
-      console.log("highlight", currentHandle);
+      console.log('highlight', currentHandle);
 
       if (currentHandle) {
         clearTimeout(currentHandle);
-        console.log(currentHandle, "currentHandle cleared");
+        console.log(currentHandle, 'currentHandle cleared');
       }
 
-      ref.current.style.background = "#fff";
-      ref.current.style.background = "#f8ffb4";
+      console.log('**********', ref);
+
+      ref.current.style.background = '#fff';
+      ref.current.style.background = '#f8ffb4';
 
       const timeOutHandle = setTimeout(() => {
         console.log(currentHandle, `currentHandle cleared after ${timeOut}ms`);
-        ref.current.style.background = "#fff";
+        ref.current.style.background = '#fff';
       }, timeOut);
       setCurrentHandles(timeOutHandle);
     }
