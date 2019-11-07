@@ -32,11 +32,7 @@ const Wrapper = props => {
         }
       }
     else if (typeof children === 'object') {
-      cur = children;
-      setValidChildren(_c => {
-        if (_c) return [..._c, cur];
-        return [cur];
-      });
+      getValidChildren(children);
       // console.log('+++', cur, Array.isArray(cur.props.children) ? cur.props.children[0] : cur.props.children);
     } else if (children.toString().trim().length) {
       setValidChildren(_c => {
