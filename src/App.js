@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useForm } from './hooks/useForm';
 import Wrapper from './components/Wrapper';
 import './App.css';
@@ -30,42 +30,31 @@ function App() {
     children4: 'c4'
   });
 
-  const pRef1 = useRef();
-  const pRef2 = useRef();
-  const pRef3 = useRef();
-  const pRef4 = useRef();
-
-  const cRef0 = useRef();
-  const cRef1 = useRef();
-  const cRef2 = useRef();
-  const cRef3 = useRef();
-  const cRef4 = useRef();
-
   return (
     <div className='App'>
-      <Wrapper timeOut={2000}>
+      <Wrapper timeOut={20000}>
+        <p>{state.result2}</p>
+        <p>{state.result3}</p>
+        <p>{state.result4}</p>
         <div>
-          <span ref={pRef1}>{state.result1}</span>
+          <span>{state.result1}</span>
           {'  '}{' '}
           <div style={{ marginLeft: '50px' }}>
-            <span ref={cRef0}>{state.children0}</span>
+            <span>{state.children0}</span>
             <div style={{ marginLeft: '75px' }}>
-              <span ref={cRef1}>{state.children1} </span>
+              <span>{state.children1} </span>
               <div style={{ marginLeft: '100px' }}>
-                <span ref={cRef2}>{state.children2} </span>
+                <span>{state.children2} </span>
                 <div style={{ marginLeft: '125px' }}>
-                  <span ref={cRef3}>{state.children3} </span>
+                  <span>{state.children3} </span>
                   <div style={{ marginLeft: '150px' }}>
-                    <span ref={cRef4}> {state.children4} </span>
+                    <span> {state.children4} </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <p ref={pRef2}>{state.result2}</p>
-        <p ref={pRef3}>{state.result3}</p>
-        <p ref={pRef4}>{state.result4}</p>
       </Wrapper>
 
       <input
