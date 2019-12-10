@@ -98,6 +98,8 @@ const Wrapper = props => {
 
     setValidChildren(_c => []);
 
+    // getValidChildren({ props: { children: props.children } });
+
     getValidChildren({ props: { children: childrenWithRef } });
 
     setValidChildren(_c => _c.filter(c => c));
@@ -120,8 +122,7 @@ const Wrapper = props => {
           idx={idx}
           updateTimeOut={updateTimeOut}
           timeOutHandles={timeOutHandles[idx]}
-          child={child}
-        ></ChildItem>
+          child={child}></ChildItem>
       ))}
 
       {childrenWithRef}

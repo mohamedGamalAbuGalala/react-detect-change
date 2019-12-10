@@ -19,20 +19,20 @@ import './App.css';
 
 function App() {
   const [state, handleChange] = useForm({
-    result1: 'res 1',
-    result2: 'res 2',
-    result3: 'res 3',
-    result4: 'res 4',
-    children0: 'c0',
-    children1: 'c1',
-    children2: 'c2',
-    children3: 'c3',
-    children4: 'c4'
+    result1: '',
+    result2: '',
+    result3: '',
+    result4: '',
+    children0: '',
+    children1: '',
+    children2: '',
+    children3: '',
+    children4: ''
   });
 
   return (
     <div className='App'>
-      <Wrapper timeOut={20000}>
+      <Wrapper timeOut={2000}>
         <p>{state.result2}</p>
         <p>{state.result3}</p>
         <p>{state.result4}</p>
